@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block head %}
+
+{% endblock %}
+{% block body %}
+<div style="padding:20px 0;margin-bottom: 30px;">
+<h1 style="float: left">应聘管理</h1>
+<a href="{{ url_for('add_employee') }}" style="float: right" id="submit" class="layui-btn"lay-filter="demo1">添加应聘者</a>
+</div>
+
+    <table class="layui-table">
+    <colgroup>
+      <col width="75">
+      <col width="60">
+      <col width="60">
+      <col width="100">
+      <col width="100">
+      <col width="100">
+      <col width="150">
+      <col width="100">
+      <col width="100">
+      <col>
+    </colgroup>
+    <thead>
+      <tr>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>籍贯</th>
+        <th>从业年龄</th>
+        <th>学历</th>
+        <th>证书</th>
+        <th>应聘项目</th>
+        <th>简历评分</th>
+        <th>面试评分</th>
+        <th>总分</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for employee in employees %}
+    <tr>
+    <td>{{ employee.name }}</td>
+    <td>{{ employee.age }}</td>
+
+    <td>{% if employee.sex.value == 1 %}男{% else %}女{% endif %}</td>
+    <td>{{ employee.hometown }}</td>
+    <td>{{ employee.working_age }}</td>
+    <td>{% if employee.education.value == 1 %}博士{% elif employee.education.value == 2 %}研究生{% elif employee.education.value == 3 %}本科{% elif employee.education.value == 4 %}高中{% elif employee.education.value == 5 %}初中及以下{% endif %}</td>
+    <td>{{ employee.certificate }}</td>
+    <td>{{ employee.project.name }}</td>
+    <td>{{ employee.resume_score }}</td>
+    <td>{{ employee.interview_score }}</td>
+    <td>{{ employee.total_score }}</td>
+    <td> <button type="button" class="layui-btn layui-btn-normal layui-btn-sm edit">编辑</button></td>
+    </tr>
+    {% endfor %}
+
+
+    </tbody>
+  </table>
+   <script>
+   layui.use('layer',function () {
+      var layer = layui.layer;
+      $('.edit').on('click', function(){
+      layer.open({
+      type: 1,
+          title:'编辑',
+      area: ['600px', '360px'],
+      shadeClose: true,
+      content: '<div style="padding:20px;"><div class="layui-form-item">\n' +
+          '    <label class="layui-form-label">用户名</label>\n' +
+          '    <div class="layui-input-block">\n' +
+          '      <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">\n' +
+          '    </div>\n' +
+          '  </div></div>'
+    });
+  });
+});
+  </script>
+{% endblock %}

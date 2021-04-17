@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block head %}
+{% endblock %}
+{% block body %}
+    <h1 style="padding: 0 10px;">个人中心</h1>
+    <table class="layui-table" style="padding: 50px;">
+        <tbody>
+            <tr>
+                <td>用户名：</td>
+                <td>{{ g.user.username }}</td>
+            </tr>
+            <tr>
+                <td>邮箱：</td>
+                <td>{{ g.user.email }}</td>
+            </tr>
+            <tr>
+                <td>管理项目：</td>
+                <td>{{ g.user.project.name or '暂无'}}</td>
+            </tr>
+            <tr>
+                <td>加入时间：</td>
+                <td>{{ g.user.join_time }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

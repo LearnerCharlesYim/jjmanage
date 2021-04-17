@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block head %}
+<script src="{{ url_for('static',filename='js/project_manage.js') }}"></script>
+{% endblock %}
+{% block body %}
+ <h1 style="padding: 0 10px;">项目管理</h1>
+ <table class="layui-table">
+    <colgroup>
+      <col width="150">
+      <col width="150">
+      <col width="200">
+      <col>
+    </colgroup>
+    <thead>
+      <tr>
+        <th>项目名称</th>
+        <th>HR用户名</th>
+        <th>招聘人数</th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for project in projects %}
+        <tr>
+        <td>{{ project.name }}</td>
+        <td>{{ project.hr_user.username or '无' }}</td>
+        <td>{{ project.emploees | length }}</td>
+        <td>{% if not project.hr_user.username %}
+            <span class="layui-badge layui-bg-blue">可选</span>
+        {% endif %}</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+  </table>
+<div style="margin: 20px"></div>
+<form class="layui-form" action="" method="post" style="width: 500px;">
+  <div class="layui-form-item" style="margin-left: -10px">
+    <label class="layui-form-label">可选项目</label>
+    <div class="layui-input-block">
+      <select name="project" lay-filter="aihao">
+        <option value=""></option>
+        {% for project in projects %}
+         <option value="{{ project.id }}" {% if project.hr_user %}disabled{% endif %}>{{ project.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button type="submit" id="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+    </div>
+  </div>
+<p style="display:none;color:red;text-align:center;" class="text-danger" id="message-p"></p>
+</form>
+
+{% endblock %}

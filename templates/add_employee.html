@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block head %}
+<script src="{{ url_for('static',filename="js/add_employee.js") }}"></script>
+{% endblock %}
+{% block body %}
+
+<form class="layui-form" method="post" action="">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">姓名</label>
+      <div class="layui-input-inline">
+        <input type="tel" name="name" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+     <div class="layui-inline">
+      <label class="layui-form-label">年龄</label>
+      <div class="layui-input-inline">
+        <input type="text" name="age"  placeholder="请输入年龄" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">性别</label>
+    <div class="layui-input-block">
+      <input type="radio" name="gender" value="MALE" title="男" checked="">
+      <input type="radio" name="gender" value="FEMAIL" title="女">
+    </div>
+  </div>
+  <div class="layui-form-item" style="width: 630px">
+    <label class="layui-form-label">籍贯</label>
+    <div class="layui-input-block">
+      <input type="text" name="hometown"  autocomplete="off" placeholder="请输入" class="layui-input">
+    </div>
+  </div>
+      <div class="layui-form-item" style="width: 630px">
+    <label class="layui-form-label">从业年龄</label>
+    <div class="layui-input-block">
+      <input type="text" name="working_age" autocomplete="off" placeholder="请输入" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item" style="width: 630px">
+    <label class="layui-form-label">学历</label>
+    <div class="layui-input-block">
+      <select name="education">
+        <option value=""></option>
+        <option value="DOCTOR">博士</option>
+        <option value="MASTER">研究生</option>
+        <option value="BACHELOR">本科</option>
+        <option value="HIGHSCHOOL">高中</option>
+        <option value="MIDDLESCHOOL">初中及以下</option>
+      </select>
+    </div>
+  </div>
+      <div class="layui-form-item" style="width: 630px">
+    <label class="layui-form-label">证书</label>
+    <div class="layui-input-block">
+      <input type="text" name="certificate" autocomplete="off" placeholder="请输入" class="layui-input">
+    </div>
+  </div>
+    <div class="layui-form-item" style="width: 630px">
+    <label class="layui-form-label">简历评分</label>
+    <div class="layui-input-block">
+      <input type="text" name="resume_score" autocomplete="off" placeholder="请输入" class="layui-input">
+    </div>
+  </div>
+      <div class="layui-form-item" style="width: 630px">
+    <label class="layui-form-label">面试评分</label>
+    <div class="layui-input-block">
+      <input type="text" name="interview_score" autocomplete="off" placeholder="请输入" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">应聘项目</label>
+        <div class="layui-input-block">
+      <select name="project" lay-filter="aihao">
+            <option value=""></option>
+          {% for project in projects %}
+          <option value="{{ project.id }}" {% if not project.hr_user == g.user %}disabled{% endif %}>{{ project.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+    </div>
+     <div class="layui-inline">
+      <label class="layui-form-label">面试负责HR</label>
+      <div class="layui-input-inline">
+        <input type="text" name="hr_user" value="{{ g.user.username }}" disabled class="layui-input">
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <p style="display:none;color:red;text-align:center;" class="text-danger" id="message-p"></p>
+      <button type="submit" id="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+      <button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+{% endblock %}
