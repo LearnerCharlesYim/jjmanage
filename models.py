@@ -5,6 +5,7 @@ import enum
 
 class GenderEnum(enum.Enum):
     """
+    性别模型
     :GenderEnum.MALE.name = MALE
     :GenderEnum.MALE.value = 1
     """
@@ -14,6 +15,9 @@ class GenderEnum(enum.Enum):
 
 
 class EducationEnum(enum.Enum):
+    """
+    学历模型
+    """
     DOCTOR = 1           #博士学历
     MASTER = 2           #研究生学历
     BACHELOR = 3         #本科
@@ -31,7 +35,8 @@ class HrUser(db.Model):
     email = db.Column(db.String(100),nullable=False)
     join_time = db.Column(db.DateTime,default=datetime.now())
 
-    project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
+    project_id = db.Column(db.Integer,db.ForeignKey('project.id'),unique=True)
+    # ORM层面外键映射
     project = db.relationship('Project', backref=db.backref('hr_user',uselist=False))
 
     def __init__(self,username,password,email):
@@ -51,8 +56,14 @@ class HrUser(db.Model):
         self._password = generate_password_hash(raw_password)
 
     def check_password(self,raw_password):
+        """
+        检查密码是否正确函数
+        :param raw_password:
+        :return:
+        """
         result = check_password_hash(self.password,raw_password)
         return result
+
 
 #项目模型
 class Project(db.Model):
@@ -80,5 +91,6 @@ class Employee(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     hr_id = db.Column(db.Integer,db.ForeignKey('hr_user.id'))
 
+    #ORM层面外键映射
     project = db.relationship('Project', backref=db.backref('emploees',cascade='all'))
     hr = db.relationship('HrUser', backref=db.backref('emploees',cascade='all'))

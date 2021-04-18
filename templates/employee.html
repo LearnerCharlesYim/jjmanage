@@ -7,7 +7,6 @@
 <h1 style="float: left">应聘管理</h1>
 <a href="{{ url_for('add_employee') }}" style="float: right" id="submit" class="layui-btn"lay-filter="demo1">添加应聘者</a>
 </div>
-
     <table class="layui-table">
     <colgroup>
       <col width="75">
@@ -52,7 +51,7 @@
     <td>{{ employee.resume_score }}</td>
     <td>{{ employee.interview_score }}</td>
     <td>{{ employee.total_score }}</td>
-    <td> <button type="button" class="layui-btn layui-btn-normal layui-btn-sm edit">编辑</button></td>
+    <td> <button type="button" class="layui-btn layui-btn-normal layui-btn-sm edit" data-id="{{ employee.id }}" name="{{ employee.name }}" age="{{ employee.age }}" hometown="{{ employee.hometown }}" working_age="{{ employee.working_age }}" certificate="{{ employee.certificate }}" project="{{ employee.project.name }}" resume_score="{{ employee.resume_score }}" interview_score="{{ employee.interview_score }}" total_score="{{ employee.total_score }}" sex="{{ employee.sex.value }}" education="{{ employee.education.value }}">编辑</button></td>
     </tr>
     {% endfor %}
 
@@ -63,17 +62,150 @@
    layui.use('layer',function () {
       var layer = layui.layer;
       $('.edit').on('click', function(){
+          var self = $(this);
+          var employee_id = self.attr('data-id');
+          var name = self.attr('name');
+          var age = self.attr('age');
+          var hometown = self.attr('hometown');
+          var working_age = self.attr('working_age');
+          var certificate = self.attr('certificate');
+          var project = self.attr('project');
+          var resume_score = self.attr('resume_score');
+          var interview_score = self.attr('interview_score');
+          var total_score = self.attr('total_score');
+          var sex = self.attr('sex');
+          var education = self.attr('education');
+          var man;
+          var woman;
+          if(sex == 1){
+              man = 'selected';
+              woman = '';
+          }else{
+              man = '';
+              woman = 'selected';
+          }
+          var doctor,master,bachelor,high,middle = '';
+          if(education == 1){
+              doctor = 'selected';
+          }else if(education == 2){
+              master = 'selected';
+          }else if(education == 3){
+              bachelor = 'selected';
+          }else if(education == 4){
+              high = 'selected';
+          }else if(education == 5){
+              middle = 'selected';
+          }
       layer.open({
       type: 1,
-          title:'编辑',
-      area: ['600px', '360px'],
+      title:'编辑',
+      closeBtn: 2,
+      btn: ['确认', '取消'],
+      yes:function(index, layero){
+           var name = $("input[name='name']").val();
+           var age = $("input[name='age']").val();
+           var sex = $('select[name="sex"]').val();
+           var hometown = $("input[name='hometown']").val();
+           var working_age = $("input[name='working_age']").val();
+           var education = $("select[name='education']").val();
+           var certificate = $("input[name='certificate']").val();
+           var resume_score = $("input[name='resume_score']").val();
+           var interview_score = $("input[name='interview_score']").val();
+           var total_score = $("input[name='total_score']").val();
+           zlajax.post({
+           'url':'/employee/edit/',
+           'data':{
+               'employee_id':employee_id,
+               'name':name,
+               'age':age,
+               'sex':sex,
+               'hometown':hometown,
+               'working_age':working_age,
+               'education':education,
+               'certificate':certificate,
+               'resume_score':resume_score,
+               'interview_score':interview_score,
+               'total_score':total_score
+           },
+           'success':function (data) {
+               if(data['code'] === 200){
+                   window.location = '/employee/';
+               }else{
+                   var message = data['message'];
+                   $("#message-p").html(message);
+                   $("#message-p").show();
+                }
+           },
+       })
+      },
+      resize: false,
+      area: ['1080px', '300px'],
       shadeClose: true,
-      content: '<div style="padding:20px;"><div class="layui-form-item">\n' +
-          '    <label class="layui-form-label">用户名</label>\n' +
-          '    <div class="layui-input-block">\n' +
-          '      <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">\n' +
-          '    </div>\n' +
-          '  </div></div>'
+      content: `
+    <div style="padding:20px;">
+     <table class="layui-table">
+    <colgroup>
+      <col width="110">
+      <col width="80">
+      <col width="80">
+      <col width="180">
+      <col width="120">
+      <col width="100">
+      <col width="200">
+      <col width="120">
+      <col width="120">
+      <col width="120">
+      <col width="110">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>籍贯</th>
+        <th>从业年龄</th>
+        <th>学历</th>
+        <th>证书</th>
+        <th>应聘项目</th>
+        <th>简历评分</th>
+        <th>面试评分</th>
+        <th>总分</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    <tr>
+    <td><input type="text" name="name" class="layui-input" value="${name}"></td>
+    <td><input type="text" name="age" class="layui-input" value="${age}"></td>
+
+    <td>
+        <select name="sex" class="layui-input" lay-verify="required" lay-search="">
+          <option value="MALE" ${man}>男</option>
+          <option value="FEMAIL" ${woman}>女</option>
+        </select>
+      </td>
+    <td><input type="text" name="hometown" class="layui-input" value="${hometown}"></td>
+    <td><input type="text" name="working_age" class="layui-input" value="${working_age}"></td>
+    <td>
+        <select name="education" class="layui-input" lay-verify="required" lay-search="">
+          <option value="DOCTOR" ${doctor}>博士</option>
+          <option value="MASTER" ${master}>研究生</option>
+          <option value="BACHELOR" ${bachelor}>本科</option>
+          <option value="HIGHSCHOOL" ${high}>高中</option>
+          <option value="MIDDLESCHOOL" ${middle}>初中及以下</option>
+        </select>
+    </td>
+    <td><input type="text" name="certificate" class="layui-input" value="${certificate}"></td>
+    <td>${project}</td>
+    <td><input type="text" name="resume_score" class="layui-input" value="${resume_score}"></td>
+    <td><input type="text" name="interview_score" class="layui-input" value="${interview_score}"></td>
+    <td><input type="text" name="total_score" class="layui-input" value="${total_score}"></td>
+    </tr>
+    </tbody>
+  </table>
+    <p style="display:none;color:red;text-align:center;" class="text-danger" id="message-p"></p>
+          </div>
+      `
     });
   });
 });

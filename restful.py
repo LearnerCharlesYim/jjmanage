@@ -1,6 +1,9 @@
 from flask import jsonify
 
 class HttpCode(object):
+    """
+    状态码
+    """
     ok = 200
     paramserror = 400
     unautherror = 401
