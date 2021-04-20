@@ -36,13 +36,14 @@
 <div style="margin: 20px"></div>
 <form class="layui-form" action="" method="post" style="width: 500px;">
   <div class="layui-form-item" style="margin-left: -10px">
-    <label class="layui-form-label">可选项目</label>
+    <label class="layui-form-label">选择项目</label>
     <div class="layui-input-block">
       <select name="project" lay-filter="aihao">
+
         <option value=""></option>
         <option value="">空</option>
         {% for project in projects %}
-         <option value="{{ project.id }}" {% if project.hr_user %}disabled{% endif %}>{{ project.name }}</option>
+         <option value="{{ project.id }}" {% if project.hr_user %}disabled{% endif %}>{{ project.name }} </option>
         {% endfor %}
       </select>
     </div>

@@ -70,7 +70,6 @@ def login():
             return restful.params_error(message=form.get_error())
 
 
-
 @app.route('/')
 @login_required
 def index():

@@ -5,7 +5,6 @@ from exts import db
 from models import HrUser,Project,Employee
 import pymysql
 
-
 manager = Manager(app)
 
 Migrate(app,db)
@@ -35,18 +34,11 @@ def create_database():
     conn = pymysql.connect(host="127.0.0.1", user="root", password="root")
     # 获取游标
     cursor = conn.cursor()
-    # 创建jjmanage数据库
+    # 创建数据库jjmanage
     cursor.execute('CREATE DATABASE IF NOT EXISTS jjmanage DEFAULT CHARSET utf8 COLLATE utf8_general_ci;')
     cursor.close()  # 先关闭游标
     conn.close()  # 再关闭数据库连接
     print('创建数据库成功！')
-
-
-@manager.command
-def create_employee():
-
-    for i in range(100):
-        pass
 
 
 if __name__ == '__main__':
